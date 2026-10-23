@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.app %}{{ page.app }} – {% endif %}{{ page.title }}</title>
+  <style>
+    :root {
+      --bg: #ffffff; --text: #1d1d1f; --muted: #6e6e73;
+      --link: #0066cc; --border: #e5e5ea; --code-bg: #f5f5f7;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #000000; --text: #f5f5f7; --muted: #a1a1a6;
+        --link: #2997ff; --border: #2c2c2e; --code-bg: #1c1c1e;
+        color-scheme: dark;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-text-size-adjust: 100%;
+    }
+    main { max-width: 680px; margin: 0 auto; padding: 48px 20px 64px; }
+    .eyebrow { color: var(--muted); font-size: 15px; font-weight: 600; margin: 0 0 4px; }
+    h1 { font-size: 34px; line-height: 1.2; margin: 0 0 8px; }
+    h2 { font-size: 22px; margin: 36px 0 8px; }
+    h3 { font-size: 18px; margin: 24px 0 4px; }
+    .updated { color: var(--muted); font-size: 15px; margin: 0 0 32px; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    nav { display: flex; gap: 16px; padding-bottom: 16px; margin-bottom: 32px; border-bottom: 1px solid var(--border); font-size: 15px; }
+    nav a[aria-current] { color: var(--text); font-weight: 600; }
+    code { background: var(--code-bg); padding: 2px 6px; border-radius: 4px; font-size: 15px; }
+    footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; }
+  </style>
+</head>
+<body>
+  <main>
+    {% if page.app %}
+      {% assign folder = page.path | split: "/" | first %}
+      {% assign privacy_url = "/" | append: folder | append: "/privacy/" %}
+      {% assign support_url = "/" | append: folder | append: "/support/" %}
+      <nav>
+        <a href="{{ privacy_url | relative_url }}"{% if page.url == privacy_url %} aria-current="page"{% endif %}>Privacy Policy</a>
+        <a href="{{ support_url | relative_url }}"{% if page.url == support_url %} aria-current="page"{% endif %}>Support</a>
+      </nav>
+      <p class="eyebrow">{{ page.app }}</p>
+    {% endif %}
+    <h1>{{ page.title }}</h1>
+    {% if page.updated %}<p class="updated">Last updated {{ page.updated | date: "%B %-d, %Y" }}</p>{% endif %}
+
+    {{ content }}
+
+    <footer>© {{ site.time | date: "%Y" }} {{ site.company }}</footer>
+  </main>
+</body>
+</html>
